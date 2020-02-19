@@ -33,6 +33,9 @@ test:
     requires:
         - case >=1.3.1
         - pytest >=3.0
+        - boto3
+        - pymongo
+        - moto
     source_files:
         - t
     imports:
