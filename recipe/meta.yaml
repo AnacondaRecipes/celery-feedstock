@@ -8,6 +8,8 @@ package:
 source:
     url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
     sha256: e3e8956d74af986b1e9770e0a294338b259618bf70283d6157416328e50c2bd6
+    patches:
+        - 0001-skip-a-test.patch
 
 build:
     noarch: python
@@ -22,6 +24,8 @@ requirements:
         - pip
     run:
         - python
+        - click-didyoumean
+        - click-repl
         - pytz
         - billiard>=3.6.3,<4.0
         - kombu>=4.6.10,<4.7
@@ -36,6 +40,7 @@ test:
     requires:
         - case >=1.3.1
         - pytest >=4.5.0,<5.3.5
+        - pytest-subtests
         - boto3 >1.9.178
         - moto 1.3.7.*
     source_files:
@@ -53,7 +58,6 @@ test:
         - celery.fixups
         - celery.loaders
         - celery.security
-        - celery.task
         - celery.utils
         - celery.utils.dispatch
         - celery.worker
