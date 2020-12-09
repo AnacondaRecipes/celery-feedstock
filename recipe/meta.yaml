@@ -26,6 +26,7 @@ requirements:
         - python
         - click-didyoumean
         - click-repl
+        - click-plugins
         - pytz
         - billiard>=3.6.3,<4.0
         - kombu>=4.6.10,<4.7
