@@ -1,5 +1,5 @@
 {% set name = "celery" %}
-{% set version = "5.0.4" %}
+{% set version = "5.0.5" %}
 
 package:
     name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
     url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-    sha256: 45bb7909061862305cefec94289fabc1b89ac004680f4dc7d9dea642a2507e53
+    sha256: f4efebe6f8629b0da2b8e529424de376494f5b7a743c321c8a2ddc2b1414921c
     patches:
         - 0001-skip-a-test.patch
 
