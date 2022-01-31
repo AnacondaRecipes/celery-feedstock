@@ -22,6 +22,9 @@ requirements:
     build:
         - python
         - pip
+        - patch     # [not win]
+        - m2-patch  # [win]
+
     run:
         - python
         - click-didyoumean
