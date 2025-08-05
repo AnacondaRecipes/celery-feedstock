@@ -1,52 +1,45 @@
 {% set name = "celery" %}
-{% set version = "5.0.5" %}
+{% set version = "5.5.3" %}
 
 package:
-    name: {{ name|lower }}
-    version: {{ version }}
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
-    url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-    sha256: f4efebe6f8629b0da2b8e529424de376494f5b7a743c321c8a2ddc2b1414921c
-    patches:
-        - 0001-skip-a-test.patch
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 6c972ae7968c2b5281227f01c3a3f984037d21c5129d07bf3550cc2afc6b10a5
 
 build:
-    noarch: python
-    number: 0
-    script: "{{ PYTHON }} -m pip install . --no-deps -vv"
-    entry_points:
-        - celery = celery.__main__:main
+  skip: true  # [py<38]
+  entry_points:
+    - celery = celery.__main__:main
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
 
 requirements:
-    build:
+    host:
         - python
         - pip
-        - patch     # [not win]
-        - m2-patch  # [win]
-
     run:
         - python
-        - click-didyoumean
-        - click-repl
-        - click-plugins
-        - pytz
-        - billiard>=3.6.3,<4.0
-        - kombu>=4.6.10,<4.7
-        - future >=0.18.0
-        - vine 1.3.0.*
-        - sqlalchemy
-        - cryptography
-    run_constrained:
-        - sphinx >=2.0
+        - billiard >=4.2.1,<5.0
+        - kombu >=5.5.2,<5.6
+        - vine >=5.1.0,<6.0
+        - click >=8.1.2,<9.0
+        - click-didyoumean >=0.3.0
+        - click-repl >=0.2.0
+        - click-plugins >=1.1.1
+        - backports.zoneinfo >=0.2.1  # [py<39]
+        - python-dateutil >=2.8.2
 
 test:
     requires:
         - case >=1.3.1
-        - pytest >=4.5.0,<5.3.5
+        - pytest
         - pytest-subtests
-        - boto3 >1.9.178
-        - moto 1.3.7.*
+        - boto3 >=1.26.143
+        - moto >=4.1.11,<5.1.0
+        - pip
     source_files:
         - t
     imports:
@@ -71,13 +64,18 @@ test:
         - celery beat --help
         - celery multi help
         - celery shell --help
+        - pip check
         - pytest t/unit  # [py3k]
 
 about:
     home: http://celeryproject.org
     license_file: LICENSE
     license: BSD-3-Clause
+    license_family: BSD
     summary: Distributed Task Queue
+    description: |
+        Celery is a simple, flexible, and reliable distributed system to process vast amounts of messages,
+        while providing operations with the tools required to maintain such a system.
     dev_url: https://github.com/celery/celery
     doc_url: http://docs.celeryproject.org/en/latest/index.html
 
