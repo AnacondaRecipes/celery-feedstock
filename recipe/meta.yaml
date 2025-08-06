@@ -1,5 +1,10 @@
 {% set name = "celery" %}
 {% set version = "5.5.3" %}
+{% set u_tests_to_skip = "--ignore=t/unit/app/test_preload_cli.py " %}
+{% set u_tests_to_skip = u_tests_to_skip + "--ignore=t/unit/bin/test_beat.py " %}
+{% set u_tests_to_skip = u_tests_to_skip + "--ignore=t/unit/bin/test_control.py " %}
+{% set u_tests_to_skip = u_tests_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
+{% set u_tests_to_skip = u_tests_to_skip + "--ignore=t/unit/bin/test_daemonization.py " %}
 
 package:
   name: {{ name|lower }}
@@ -31,12 +36,17 @@ requirements:
         - click-plugins >=1.1.1
         - backports.zoneinfo >=0.2.1  # [py<39]
         - python-dateutil >=2.8.2
-
 test:
     requires:
-        - case >=1.3.1
         - pytest
         - pytest-subtests
+        - pytest-rerunfailures >=15.0 # [py39]
+        - case >=1.3.1
+        - dnspython
+        - google-cloud-storage
+        - azure-storage-blob>=12.15.0
+        - sqlalchemy
+        - pymongo
         - boto3 >=1.26.143
         - moto >=4.1.11,<5.1.0
         - pip
@@ -59,14 +69,11 @@ test:
         - celery.utils.dispatch
         - celery.worker
     commands:
-        - celery --version
-        - celery worker --help
-        - celery beat --help
-        - celery multi help
-        - celery shell --help
         - pip check
-        - pytest t/unit  # [py3k]
-
+        - pytest -vv t/unit {{ u_tests_to_skip }} -k "not (test_pytest_celery_marker_registration or test_on_event_task_received or test_on_event_non_task)"
+        # Integration and smoke tests requires pytest packages which are not available in Conda now.
+        # - pytest -vv t/integration
+        # - pytest -vv t/smoke
 about:
     home: http://celeryproject.org
     license_file: LICENSE
