@@ -73,6 +73,7 @@ test:
         - celery.utils.dispatch
         - celery.worker
     commands:
+        # Running test is limited because it requires 'pytest=8.3.5' which is not available now
         - pip check
         - pytest -vv t/unit {{ u_test_files_to_skip }} -k "not ({{ u_tests_to_skip }})" # [py<312]
         # Integration and smoke tests requires pytest packages which are not available in Conda now.
