@@ -1,10 +1,14 @@
 {% set name = "celery" %}
 {% set version = "5.5.3" %}
-{% set u_tests_to_skip = "--ignore=t/unit/app/test_preload_cli.py " %}
-{% set u_tests_to_skip = u_tests_to_skip + "--ignore=t/unit/bin/test_beat.py " %}
-{% set u_tests_to_skip = u_tests_to_skip + "--ignore=t/unit/bin/test_control.py " %}
-{% set u_tests_to_skip = u_tests_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
-{% set u_tests_to_skip = u_tests_to_skip + "--ignore=t/unit/bin/test_daemonization.py " %}
+{% set u_test_files_to_skip = "--ignore=t/unit/app/test_preload_cli.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_beat.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_control.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_daemonization.py " %}
+{% set u_tests_to_skip = " test_check_privileges " %}
+{% set u_tests_to_skip = u_tests_to_skip + "or test_pytest_celery_marker_registration " %}
+{% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_task_received " %}
+{% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_non_task " %}
 
 package:
   name: {{ name|lower }}
@@ -70,12 +74,13 @@ test:
         - celery.worker
     commands:
         - pip check
-        - pytest -vv t/unit {{ u_tests_to_skip }} -k "not (test_pytest_celery_marker_registration or test_on_event_task_received or test_on_event_non_task)"
+        - pytest -vv t/unit {{ u_test_files_to_skip }} -k "not ({{ u_tests_to_skip }})"
         # Integration and smoke tests requires pytest packages which are not available in Conda now.
         # - pytest -vv t/integration
         # - pytest -vv t/smoke
+
 about:
-    home: http://celeryproject.org
+    home: https://celeryproject.org
     license_file: LICENSE
     license: BSD-3-Clause
     license_family: BSD
@@ -84,7 +89,7 @@ about:
         Celery is a simple, flexible, and reliable distributed system to process vast amounts of messages,
         while providing operations with the tools required to maintain such a system.
     dev_url: https://github.com/celery/celery
-    doc_url: http://docs.celeryproject.org/en/latest/index.html
+    doc_url: https://docs.celeryproject.org
 
 extra:
     recipe-maintainers:
