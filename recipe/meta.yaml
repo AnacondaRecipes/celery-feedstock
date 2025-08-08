@@ -6,7 +6,7 @@
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_control.py " %}
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_daemonization.py " %}
-
+{% set u_tests_to_skip = " " %}
 # {% set u_tests_to_skip = " test_check_privileges " %}
 # Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'Failed'>)
 {% set u_tests_to_skip = u_tests_to_skip + " test_pytest_celery_marker_registration " %}
