@@ -9,7 +9,7 @@
 # celery.exceptions.SecurityError: Running a worker with superuser privileges
 {% set u_tests_to_skip = " test_check_privileges " %}
 # Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'Failed'>)
-{% set u_tests_to_skip = u_tests_to_skip + " test_pytest_celery_marker_registration " %}
+{% set u_tests_to_skip = u_tests_to_skip + "or test_pytest_celery_marker_registration " %}
 # AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] task received mytask(abc) args=(1,) kwargs={} \n'
 {% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_task_received " %}
 # AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] started: foo=bar\n'
