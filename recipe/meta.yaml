@@ -7,15 +7,8 @@
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_daemonization.py " %}
 
-#E           celery.exceptions.ImproperlyConfigured: You must install google-cloud-firestore to use gcs backend
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/backends/test_gcs.py " %}
-# E       AttributeError: 'NoneType' object has no attribute 'RedisError'
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/backends/test_redis.py " %}
 # celery.exceptions.SecurityError: Running a worker with superuser privileges
 {% set u_tests_to_skip = " test_check_privileges " %}
-{% set u_tests_to_skip = u_tests_to_skip + "or test_regression_worker_startup_info " %}
-{% set u_tests_to_skip = u_tests_to_skip + "or test_with_guid " %}
-{% set u_tests_to_skip = u_tests_to_skip + "or test_only_gid " %}
 # Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'Failed'>)
 {% set u_tests_to_skip = u_tests_to_skip + "or test_pytest_celery_marker_registration " %}
 # AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] task received mytask(abc) args=(1,) kwargs={} \n'
@@ -30,8 +23,6 @@ package:
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 6c972ae7968c2b5281227f01c3a3f984037d21c5129d07bf3550cc2afc6b10a5
-  patches:
-    - pyproject.patch
 
 build:
   skip: true  # [py<38]
@@ -75,7 +66,6 @@ test:
         - pip
     source_files:
         - t
-        - pyproject.toml
     imports:
         - celery
         - celery.app
