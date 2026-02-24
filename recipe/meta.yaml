@@ -1,28 +1,27 @@
 {% set name = "celery" %}
-{% set version = "5.5.3" %}
-# E       fixture 'cli_runner' not found : for next tests:
+{% set version = "5.6.2" %}
 {% set u_test_files_to_skip = "--ignore=t/unit/app/test_preload_cli.py " %}
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_beat.py " %}
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_control.py " %}
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_daemonization.py " %}
-
-# celery.exceptions.SecurityError: Running a worker with superuser privileges
 {% set u_tests_to_skip = " test_check_privileges " %}
-# Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'Failed'>)
 {% set u_tests_to_skip = u_tests_to_skip + "or test_pytest_celery_marker_registration " %}
-# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] task received mytask(abc) args=(1,) kwargs={} \n'
 {% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_task_received " %}
-# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] started: foo=bar\n'
 {% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_non_task " %}
 
+# E       fixture 'cli_runner' not found : for next tests:
+# celery.exceptions.SecurityError: Running a worker with superuser privileges
+# Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'Failed'>)
+# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] task received mytask(abc) args=(1,) kwargs={} \n'
+# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] started: foo=bar\n'
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 6c972ae7968c2b5281227f01c3a3f984037d21c5129d07bf3550cc2afc6b10a5
+  sha256: 4a8921c3fcf2ad76317d3b29020772103581ed2454c4c042cc55dcc43585009b
 
 build:
   skip: true  # [py<38]
@@ -32,78 +31,104 @@ build:
   number: 0
 
 requirements:
-    host:
-        - python
-        - pip
-        - wheel >=0.33.1
-        - setuptools >=40.8.0
-    run:
-        - python
-        - billiard >=4.2.1,<5.0
-        - kombu >=5.5.2,<5.6
-        - vine >=5.1.0,<6.0
-        - click >=8.1.2,<9.0
-        - click-didyoumean >=0.3.0
-        - click-repl >=0.2.0
-        - click-plugins >=1.1.1
-        - backports.zoneinfo >=0.2.1  # [py<39]
-        - python-dateutil >=2.8.2
+  host:
+    - python
+    - pip
+    - wheel >=0.33.1
+    - setuptools >=40.8.0
+  run:
+    - python
+    - billiard >=4.2.1,<5.0
+    - kombu >=5.6.0
+    - vine >=5.1.0,<6.0
+    - click >=8.1.2,<9.0
+    - click-didyoumean >=0.3.0
+    - click-repl >=0.2.0
+    - click-plugins >=1.1.1
+    - backports.zoneinfo >=0.2.1  # [py<39]
+    - python-dateutil >=2.8.2
+    - exceptiongroup >=1.3.0  # [py<311]
+    - tzlocal
+  run_constrained:
+    - pyArango >=2.0.2
+    - cryptography ==46.0.3
+    - azure-storage-blob >=12.15.0
+    - azure-identity >=1.19.0
+    - cassandra-driver >=3.25.0,<4
+    - python-consul2 ==0.1.5
+    - pydocumentdb ==2.3.5
+    - pycouchdb ==1.16.0
+    - Django >=2.2.28
+    - boto3 >=1.26.143
+    - elasticsearch <=9.1.2
+    - elastic-transport <=9.1.0
+    - google-cloud-storage >=2.10.0
+    - google-cloud-firestore ==2.22.0
+    - grpcio ==1.75.1
+    - gevent >=1.5.0
+    - python-memcached >=1.61
+    - softlayer_messaging >=1.0.3
+    - urllib3 >=1.26.16
+    - kombu >=5.5.0
+    - tblib ==3.2.2
+    - kazoo >=1.3.1
+    - zstandard ==0.23.0
 
 test:
-    requires:
-        - pytest >=8.3.5
-        - pytest-subtests
-        - pytest-rerunfailures >=15.0 # [py39]
-        - kombu >=5.5.2,<5.6
-        - msgpack-python
-        - dnspython
-        - google-cloud-storage
-        - azure-storage-blob>=12.15.0
-        - sqlalchemy
-        - pymongo
-        - boto3 >=1.26.143
-        - moto >=4.1.11,<5.1.0
-        - pip
-    source_files:
-        - t
-    imports:
-        - celery
-        - celery.app
-        - celery.apps
-        - celery.backends
-        - celery.backends.database
-        - celery.bin
-        - celery.concurrency
-        - celery.contrib
-        - celery.events
-        - celery.fixups
-        - celery.loaders
-        - celery.security
-        - celery.utils
-        - celery.utils.dispatch
-        - celery.utils.static
-        - celery.worker
-        - celery.worker.consumer
-    commands:
-        - celery --version
-        - pip check
-        - pytest -v t/unit {{ u_test_files_to_skip }} -k "not ({{ u_tests_to_skip }})"
+  requires:
+    - pytest >=8.3.5
+    - pytest-subtests
+    - pytest-rerunfailures >=15.0  # [py39]
+    - kombu >=5.5.2,<5.6
+    - msgpack-python
+    - dnspython
+    - google-cloud-storage
+    - azure-storage-blob>=12.15.0
+    - sqlalchemy
+    - pymongo
+    - boto3 >=1.26.143
+    - moto >=4.1.11,<5.1.0
+    - pip
+  source_files:
+    - t
+  imports:
+    - celery
+    - celery.app
+    - celery.apps
+    - celery.backends
+    - celery.backends.database
+    - celery.bin
+    - celery.concurrency
+    - celery.contrib
+    - celery.events
+    - celery.fixups
+    - celery.loaders
+    - celery.security
+    - celery.utils
+    - celery.utils.dispatch
+    - celery.utils.static
+    - celery.worker
+    - celery.worker.consumer
+  commands:
+    - celery --version
+    - pip check
+    - pytest -v t/unit {{ u_test_files_to_skip }} -k "not ({{ u_tests_to_skip }})"
 
 about:
-    home: https://celeryproject.org
-    license_file: LICENSE
-    license: BSD-3-Clause
-    license_family: BSD
-    summary: Distributed Task Queue
-    description: |
-        Celery is a simple, flexible, and reliable distributed system to process vast amounts of messages,
-        while providing operations with the tools required to maintain such a system.
-    dev_url: https://github.com/celery/celery
-    doc_url: https://docs.celeryproject.org
+  home: https://celeryproject.org
+  license_file: LICENSE
+  license: BSD-3-Clause
+  license_family: BSD
+  summary: Distributed Task Queue
+  description: |
+    Celery is a simple, flexible, and reliable distributed system to process vast amounts of messages,
+    while providing operations with the tools required to maintain such a system.
+  dev_url: https://github.com/celery/celery
+  doc_url: https://docs.celeryproject.org
 
 extra:
-    recipe-maintainers:
-        - kwilcox
-        - pmlandwehr
-        - sodre
+  recipe-maintainers:
+    - kwilcox
+    - pmlandwehr
+    - sodre:
         - edetec
