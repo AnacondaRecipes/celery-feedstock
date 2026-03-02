@@ -52,14 +52,13 @@ requirements:
 
 test:
     requires:
-        - pytest >=8.3.5
+        - pytest >=8.4.2
         - pytest-subtests
-        - pytest-rerunfailures >=15.0 # [py39]
-        - kombu >=5.5.2
+        - pytest-rerunfailures >=15.0
         - msgpack-python
         - dnspython
-        - google-cloud-storage
-        - azure-storage-blob>=12.15.0
+        - google-cloud-storage >=2.10.0
+        - azure-storage-blob >=12.15.0
         - sqlalchemy
         - pymongo
         - boto3 >=1.26.143
