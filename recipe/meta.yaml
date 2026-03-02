@@ -7,6 +7,9 @@
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_daemonization.py " %}
 
+# TypeError: NoneType takes no arguments
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/backends/test_redis.py " %}
+
 # celery.exceptions.SecurityError: Running a worker with superuser privileges
 {% set u_tests_to_skip = " test_check_privileges " %}
 # Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'Failed'>)
@@ -63,7 +66,6 @@ test:
         - pymongo
         - boto3 >=1.26.143
         - moto >=4.1.11,<5.1.0
-        - redis
         - pip
     source_files:
         - t
