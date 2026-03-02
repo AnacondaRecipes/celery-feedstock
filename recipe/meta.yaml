@@ -1,7 +1,9 @@
 {% set name = "celery" %}
 {% set version = "5.6.2" %}
+
+{% set u_test_files_to_skip = " " %}
 # E       fixture 'cli_runner' not found : for next tests:
-{% set u_test_files_to_skip = "--ignore=t/unit/app/test_preload_cli.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/app/test_preload_cli.py " %}
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_beat.py " %}
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_control.py " %}
 {% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
@@ -93,7 +95,7 @@ test:
         - pytest -v t/unit {{ u_test_files_to_skip }} -k "not ({{ u_tests_to_skip }})"
 
 about:
-    home: https://celeryproject.org
+    home: https://docs.celeryq.dev
     license_file: LICENSE
     license: BSD-3-Clause
     license_family: BSD
@@ -102,7 +104,7 @@ about:
         Celery is a simple, flexible, and reliable distributed system to process vast amounts of messages,
         while providing operations with the tools required to maintain such a system.
     dev_url: https://github.com/celery/celery
-    doc_url: https://docs.celeryproject.org
+    doc_url: https://docs.celeryq.dev
 
 extra:
     recipe-maintainers:
