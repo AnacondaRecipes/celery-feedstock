@@ -64,6 +64,7 @@ test:
         - pymongo
         - boto3 >=1.26.143
         - moto >=4.1.11,<5.1.0
+        - redis
         - pip
     source_files:
         - t
