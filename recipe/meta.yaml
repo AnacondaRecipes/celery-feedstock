@@ -92,6 +92,7 @@ test:
     commands:
         - celery --version
         - pip check
+        - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
         - pytest -v t/unit {{ u_test_files_to_skip }} -k "not ({{ u_tests_to_skip }})"
 
 about:
