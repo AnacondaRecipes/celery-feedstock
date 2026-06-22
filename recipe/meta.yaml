@@ -67,8 +67,9 @@ test:
         - sqlalchemy
         - pymongo
         - boto3 >=1.26.143
-        - moto >=4.1.11,<5.1.0  # [py<313]
+        - moto >=4.1.11,<5.1.0  # [py<=313]
         - moto  # [py==314]
+        - pydantic
         - pip
     source_files:
         - t
