@@ -1,23 +1,6 @@
 {% set name = "celery" %}
 {% set version = "5.6.3" %}
-{% set u_test_files_to_skip = " " %}
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/app/test_preload_cli.py " %}
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_beat.py " %}
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_control.py " %}
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_daemonization.py " %}
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/backends/test_redis.py " %}
-{% set u_tests_to_skip = " test_check_privileges " %}
-{% set u_tests_to_skip = u_tests_to_skip + "or test_pytest_celery_marker_registration " %}
-{% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_task_received " %}
-{% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_non_task " %}
 
-# E       fixture 'cli_runner' not found : for next tests:
-# TypeError: NoneType takes no arguments
-# celery.exceptions.SecurityError: Running a worker with superuser privileges
-# Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'Failed'>)
-# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] task received mytask(abc) args=(1,) kwargs={} \n'
-# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] started: foo=bar\n'
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -75,6 +58,26 @@ requirements:
     - tblib ==3.2.2
     - kazoo >=1.3.1
     - zstandard ==0.23.0
+
+{% set u_test_files_to_skip = " " %}
+# E       fixture 'cli_runner' not found : for next tests:
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/app/test_preload_cli.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_beat.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_control.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_daemonization.py " %}
+
+# TypeError: NoneType takes no arguments
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/backends/test_redis.py " %}
+
+# celery.exceptions.SecurityError: Running a worker with superuser privileges
+{% set u_tests_to_skip = " test_check_privileges " %}
+# Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'Failed'>)
+{% set u_tests_to_skip = u_tests_to_skip + "or test_pytest_celery_marker_registration " %}
+# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] task received mytask(abc) args=(1,) kwargs={} \n'
+{% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_task_received " %}
+# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] started: foo=bar\n'
+{% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_non_task " %}
 
 test:
   requires:
