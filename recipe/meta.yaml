@@ -137,5 +137,5 @@ extra:
   recipe-maintainers:
     - kwilcox
     - pmlandwehr
-    - sodre:
-        - edetec
+    - sodre
+    - edetec
