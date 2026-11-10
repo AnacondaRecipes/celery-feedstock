@@ -1,13 +1,30 @@
 {% set name = "celery" %}
-{% set version = "5.6.3" %}
+{% set version = "5.7.0" %}
+{% set u_test_files_to_skip = " " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/app/test_preload_cli.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_beat.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_control.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_daemonization.py " %}
+{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/backends/test_redis.py " %}
+{% set u_tests_to_skip = " test_check_privileges " %}
+{% set u_tests_to_skip = u_tests_to_skip + "or test_pytest_celery_marker_registration " %}
+{% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_task_received " %}
+{% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_non_task " %}
 
+# E       fixture 'cli_runner' not found : for next tests:
+# TypeError: NoneType takes no arguments
+# celery.exceptions.SecurityError: Running a worker with superuser privileges
+# Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'Failed'>)
+# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] task received mytask(abc) args=(1,) kwargs={} \n'
+# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] started: foo=bar\n'
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 177006bd2054b882e9f01be59abd8529e88879ef50d7918a7050c5a9f4e12912
+  sha256: 6a5dfcf6662287204f009a02002b9e66c83d4105e47ebabdc7079108772fc6f0
 
 build:
   number: 0
@@ -24,36 +41,41 @@ requirements:
     - setuptools >=40.8.0
   run:
     - python
-    - billiard >=4.2.1,<5.0
-    - kombu >=5.6.0
+    - billiard >=4.3.2
+    - kombu >=5.7.0
     - vine >=5.1.0,<6.0
-    - click >=8.1.2,<9.0
-    - click-didyoumean >=0.3.0
-    - click-repl >=0.2.0
-    - click-plugins >=1.1.1
-    - python-dateutil >=2.8.2
+    - click >=8.3.1,<9.0
+    - click-didyoumean >=0.3.1
+    - click-repl >=0.4.1
+    - click-plugins >=1.1.1.2
+    - python-dateutil ==2.9.0.post0
     - exceptiongroup >=1.3.0  # [py<311]
     - tzlocal
-
-{% set u_test_files_to_skip = " " %}
-# E       fixture 'cli_runner' not found : for next tests:
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/app/test_preload_cli.py " %}
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_beat.py " %}
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_control.py " %}
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_worker.py " %}
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/bin/test_daemonization.py " %}
-
-# TypeError: NoneType takes no arguments
-{% set u_test_files_to_skip = u_test_files_to_skip + "--ignore=t/unit/backends/test_redis.py " %}
-
-# celery.exceptions.SecurityError: Running a worker with superuser privileges
-{% set u_tests_to_skip = " test_check_privileges " %}
-# Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'Failed'>)
-{% set u_tests_to_skip = u_tests_to_skip + "or test_pytest_celery_marker_registration " %}
-# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] task received mytask(abc) args=(1,) kwargs={} \n'
-{% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_task_received " %}
-# AssertionError: assert 'worker1 [2024-01-01 12:00:00]' in 'worker1 [2024-01-01 10:00:00] started: foo=bar\n'
-{% set u_tests_to_skip = u_tests_to_skip + "or test_on_event_non_task " %}
+  run_constrained:
+    - pyArango >=2.1.1
+    - cryptography ==50.0.2
+    - azure-storage-blob ==12.31.1
+    - azure-identity ==1.27.0
+    - cassandra-driver ==3.30.1
+    - python-consul2 ==0.1.5
+    - pydocumentdb ==2.3.5
+    - pycouchdb ==1.17.1
+    - Django >=3.2.1
+    - boto3 >=1.26.143
+    - elasticsearch <=9.5.1
+    - elastic-transport <=9.4.2
+    - kombu >=5.5.0
+    - google-cloud-storage ==3.17.1
+    - grpcio ==1.85.1
+    - google-cloud-firestore ==2.32.0
+    - gevent ==26.9.0
+    - pymemcache >=4.0.0
+    - pydantic ==2.14.1
+    - softlayer_messaging >=1.0.3
+    - urllib3 >=1.26.16
+    - tblib ==3.2.2
+    - kazoo >=1.3.1
+    - zstandard ==0.23.0
 
 test:
   requires:
